@@ -1,0 +1,11 @@
+﻿  Assembling AssemblyMethods.asm...
+AssemblyMethods.asm(6): warning A4012: line number information for segment without class 'CODE' : _DATA
+  pch.cpp
+  LabAssembler1.cpp
+c:\users\basik\documents\visual studio 2017\projects\labassembler1\labassembler1\labassembler1.cpp(13): warning C4244: инициализация: преобразование "double" в "unsigned __int64", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\labassembler1\labassembler1\labassembler1.cpp(29): warning C4244: инициализация: преобразование "_Rep" в "int", возможна потеря данных
+          with
+          [
+              _Rep=__int64
+          ]
+  LabAssembler1.vcxproj -> C:\Users\Basik\Documents\Visual Studio 2017\Projects\LabAssembler1\Debug\LabAssembler1.exe

@@ -1,0 +1,22 @@
+﻿  Lab2.cpp
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(31): warning C4244: инициализация: преобразование "double" в "unsigned __int64", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(57): warning C4244: return: преобразование "_Rep" в "int", возможна потеря данных
+          with
+          [
+              _Rep=__int64
+          ]
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(62): warning C4244: return: преобразование "_Rep" в "int", возможна потеря данных
+          with
+          [
+              _Rep=__int64
+          ]
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(120): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(121): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(124): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(128): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(129): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(132): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(142): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(143): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(183): warning C4305: =: усечение из "double" в "float"
+  Lab2.vcxproj -> C:\Users\Basik\Documents\Visual Studio 2017\Projects\Lab2\Debug\Lab2.exe

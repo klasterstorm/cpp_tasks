@@ -1,0 +1,64 @@
+Microsoft (R) Macro Assembler Version 14.16.27034.0	    01/28/20 01:03:00
+AssemblyMethods.asm					     Page 1 - 1
+
+
+				.686
+				.MODEL FLAT, C
+				.STACK
+ 00000000			.DATA
+
+ 00000000			movsqcpy PROC
+AssemblyMethods.asm(6) : warning A4012:line number information for segment without class 'CODE' : _DATA
+					;mov copy_size, %rax
+					;mov (%rax), %rax
+					;mov $8, %rbx
+					;xor %rdx, %rdx
+					;div %rbx
+					;mov %rax, %rcx
+					;mov $copy_source, %esi
+					;mov $copy_destination, %edi
+					;cld
+					;rep movsb
+					;retn
+ 00000000			movsqcpy ENDP
+
+				END
+Microsoft (R) Macro Assembler Version 14.16.27034.0	    01/28/20 01:03:00
+AssemblyMethods.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00000400 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+movsqcpy . . . . . . . . . . . .	P Near	 00000000 _DATA	Length= 00000000 Public C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   1 Warnings
+	   0 Errors

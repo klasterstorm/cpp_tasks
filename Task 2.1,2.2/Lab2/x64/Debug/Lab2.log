@@ -1,0 +1,9 @@
+﻿  pch.cpp
+  Lab2.cpp
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(46): error C2065: __asm__: необъявленный идентификатор
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(46): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "__volatile__"
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(59): error C2143: синтаксическая ошибка: отсутствие ")" перед ":"
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(46): error C3861: __volatile__: идентификатор не найден
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(59): error C2143: синтаксическая ошибка: отсутствие ";" перед ":"
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(59): error C2059: синтаксическая ошибка: :
+c:\users\basik\documents\visual studio 2017\projects\lab2\lab2\lab2.cpp(60): error C2059: синтаксическая ошибка: )

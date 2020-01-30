@@ -1,0 +1,6 @@
+﻿  Assembling AssemblyMethods.asm...
+AssemblyMethods.asm(1): error A2008: syntax error : .
+AssemblyMethods.asm(2): error A2008: syntax error : .
+AssemblyMethods.asm(3): error A2008: syntax error : .
+AssemblyMethods.asm(6): warning A4012: line number information for segment without class 'CODE' : _DATA
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\BuildCustomizations\masm.targets(69,5): error MSB3721: выход из команды "ml64.exe /c /nologo /Zi /Fo"x64\Debug\AssemblyMethods.obj" /W3 /errorReport:prompt  /TaAssemblyMethods.asm" с кодом "1".
