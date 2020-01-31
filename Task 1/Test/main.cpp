@@ -9,83 +9,74 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
-const long dataSize = 123000000;
 
-void testArray() {
-    
+using namespace std;
+
+const long dataSize = 100000000;
+double *testStorage = new double[dataSize];
+
+chrono::time_point<chrono::high_resolution_clock> start;
+
+void startTimer() {
+    start = chrono::high_resolution_clock::now();
 }
 
-void getArrayTime() {
+void stopTimer(string title) {
+    chrono::time_point<chrono::high_resolution_clock> end = chrono::high_resolution_clock::now();
+    long long elapsed = chrono::duration_cast<chrono::milliseconds>(end - start).count();
     
-    double *firstStorage = new double[dataSize];
-    double *secondStorage = new double[dataSize];
-    
+    cout << title << " - " << elapsed << " ms" << endl;
+}
+
+void initTestStorage() {
     for (long i = 0; i < dataSize; i++)
     {
-        firstStorage[i] = 1;
+        testStorage[i] = 1;
     }
+}
+
+// ---- Array methods ----
+
+void getArrayTime() {
+    double *secondStorage = new double[dataSize];
     
-    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-    start = std::chrono::high_resolution_clock::now();
+    startTimer();
     
     for (int i = 0; i < dataSize; i++)
     {
-        secondStorage[i] = firstStorage[i];
+        secondStorage[i] = testStorage[i];
     }
     
-    end = std::chrono::high_resolution_clock::now();
-    long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    std::cout << "Array time > " << elapsed << "ms\n";
+    stopTimer("getArrayTime");
 }
 
 void getMemcpy() {
-    
-    double *firstStorage = new double[dataSize];
     double *secondStorage = new double[dataSize];
     
-    for (long i = 0; i < dataSize; i++)
-    {
-        firstStorage[i] = 1;
-    }
+    startTimer();
     
-    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-    start = std::chrono::high_resolution_clock::now();
+    memcpy(secondStorage, testStorage, dataSize);
     
-    memcpy(secondStorage, firstStorage, dataSize);
-    
-    end = std::chrono::high_resolution_clock::now();
-    long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    std::cout << "Memcpy time > " << elapsed << "ms\n";
+    stopTimer("getMemcpy");
 }
 
 void getMemMove() {
-    
-    double *firstStorage = new double[dataSize];
     double *secondStorage = new double[dataSize];
     
-    for (long i = 0; i < dataSize; i++)
-    {
-        firstStorage[i] = 1;
-    }
+    startTimer();
     
-    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-    start = std::chrono::high_resolution_clock::now();
+    memmove (secondStorage, testStorage, dataSize);
     
-    memmove (secondStorage, firstStorage, dataSize);
-    
-    end = std::chrono::high_resolution_clock::now();
-    long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    std::cout << "MemMove time > " << elapsed << "ms\n";
+    stopTimer("getMemMove");
 }
 
 int main(int argc, const char * argv[]) {
+    initTestStorage();
+    
     getArrayTime();
     getMemcpy();
     getMemMove();
     
     return 0;
 }
-
-
-//
 
