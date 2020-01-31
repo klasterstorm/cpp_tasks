@@ -17,9 +17,21 @@ long numberOfIteration = 10000000;
 chrono::time_point<chrono::high_resolution_clock> start;
 
 int testValue = 0;
+int testValue2 = 0;
 
-void t1() { testValue += 1; }
-void t2() { testValue += 2; }
+#pragma optimize( "", off )
+
+void t1() {
+    testValue += 1;
+    testValue2 *= 3 + 4;
+    testValue += 1;
+}
+void t2() {
+    testValue += 2;
+    testValue2 *= testValue;
+    testValue += 1;
+    testValue2 *= 3 + 4;
+}
 
 void startTimer() {
     start = chrono::high_resolution_clock::now();
@@ -61,6 +73,8 @@ void randomPath() {
     
     stopTimer("randomPath");
 }
+
+#pragma optimize( "", on )
 
 int main(int argc, const char * argv[]) {
    

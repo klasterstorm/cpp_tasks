@@ -15,18 +15,41 @@ chrono::time_point<chrono::high_resolution_clock> start;
 std::clock_t c_start;
 
 int testValue = 0;
+int x = 0;
 int numberOfIterations = 1000000;
 
-void t0() { testValue += 1; }
-void t1() { testValue += 2; }
-void t2() { testValue += 3; }
-void t3() { testValue += 4; }
-void t4() { testValue += 5;; }
-void t5() { testValue += 6;; }
+#pragma optimize( "", off )
+
+void t0() {
+    testValue += 1;
+    x *= 2 + x - 4 + testValue;
+}
+void t1() {
+    testValue += 2 - 1;
+    x *= 3 + 3 * 2;
+    testValue += 2 + 1;
+}
+void t2() {
+    testValue += 3 + 3 * 10;
+}
+void t3() {
+    testValue += 4 + 4;
+    x = x + 4;
+    testValue += 2 + 1;
+}
+void t4() { testValue += 5;
+    testValue += 2 + 1;
+    testValue += 2 - 1;
+    x *= 3 + 3 * 2;
+    testValue += 2 + 1;
+}
+void t5() { testValue += 6 * 9 * 1 * 2; }
 void t6() { testValue += 7; }
 void t7() { testValue += 8; }
 void t8() { testValue += 9; }
 void t9() { testValue += 10; }
+
+#pragma optimize( "", on )
 
 void startAlternativeTimer() {
     c_start = std::clock();
@@ -47,8 +70,8 @@ void stopTimer(string title) {
     chrono::time_point<chrono::high_resolution_clock> end = chrono::high_resolution_clock::now();
     long long elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
     
-//    cout << title << " - " << elapsed << " ns" << endl;
-    cout << elapsed << endl;
+    cout << title << " - " << elapsed << " ns" << endl;
+//    cout << elapsed << endl;
 }
 
 long long stopAndGetTime() {
@@ -59,6 +82,8 @@ long long stopAndGetTime() {
 int getRandomValue(int maxValue) {
     return rand() % (maxValue + 1);
 }
+
+#pragma optimize( "", off )
 
 typedef void (*FunctionsArray) ();
 
@@ -76,31 +101,37 @@ void getFunctionsTime(FunctionsArray functions[], int size) {
         allTimes += stopAndGetTime();
     }
     
-    cout << allTimes << endl;
+    cout << size + 1 << " - " << allTimes << " ns" << endl;
 }
 
 void switchCaseTest4() {
-    startTimer();
+
+    long long allTimes = 0;
     
     for (int i = 0; i < numberOfIterations; i++) {
-        
         int randomValue = getRandomValue(3);
+        
+        startTimer();
         
         if (randomValue == 0) { t0(); }
         else if (randomValue == 1) { t1(); }
         else if (randomValue == 2) { t2(); }
         else if (randomValue == 3) { t3(); }
+        
+        allTimes += stopAndGetTime();
     }
     
-    stopTimer("switchCaseTest4");
+    cout << 4 << " - " << allTimes << " ns" << endl;
 }
 
 void switchCaseTest7() {
-    startTimer();
+    
+    long long allTimes = 0;
 
     for (int i = 0; i < numberOfIterations; i++) {
-        
         int randomValue = getRandomValue(6);
+        
+        startTimer();
         
         if (randomValue == 0) { t0(); }
         else if (randomValue == 1) { t1(); }
@@ -109,17 +140,20 @@ void switchCaseTest7() {
         else if (randomValue == 4) { t4(); }
         else if (randomValue == 5) { t5(); }
         else if (randomValue == 6) { t6(); }
+        
+        allTimes += stopAndGetTime();
     }
 
-    stopTimer("switchCaseTest7");
+    cout << 7 << " - " << allTimes << " ns" << endl;
 }
 
 void switchCaseTest10() {
-    startTimer();
+    long long allTimes = 0;
 
     for (int i = 0; i < numberOfIterations; i++) {
-        
         int randomValue = getRandomValue(9);
+        
+        startTimer();
         
         if (randomValue == 0) { t0(); }
         else if (randomValue == 1) { t1(); }
@@ -131,19 +165,21 @@ void switchCaseTest10() {
         else if (randomValue == 7) { t7(); }
         else if (randomValue == 8) { t8(); }
         else if (randomValue == 9) { t9(); }
+        
+        allTimes += stopAndGetTime();
     }
 
-    stopTimer("switchCaseTest10");
+    cout << 10 << " - " << allTimes << " ns" << endl;
 }
 
 void functionArray4() {
     
     FunctionsArray functions[] =
      {
-         t0,
-         t1,
-         t2,
-         t3,
+         &t0,
+         &t1,
+         &t2,
+         &t3,
      };
     
     getFunctionsTime(functions, 3);
@@ -153,13 +189,13 @@ void functionArray7() {
     
     FunctionsArray functions[] =
      {
-         t0,
-         t1,
-         t2,
-         t3,
-         t4,
-         t5,
-         t6
+         &t0,
+         &t1,
+         &t2,
+         &t3,
+         &t4,
+         &t5,
+         &t6
      };
     
     getFunctionsTime(functions, 6);
@@ -169,16 +205,16 @@ void functionArray10() {
     
     FunctionsArray functions[] =
      {
-         t0,
-         t1,
-         t2,
-         t3,
-         t4,
-         t5,
-         t6,
-         t7,
-         t8,
-         t9
+         &t0,
+         &t1,
+         &t2,
+         &t3,
+         &t4,
+         &t5,
+         &t6,
+         &t7,
+         &t8,
+         &t9
      };
     
     getFunctionsTime(functions, 9);
@@ -197,7 +233,7 @@ void switchCaseTest(int numberOfAddresses) {
             int randomValue = getRandomValue(aNumber);
             
             startTimer();
-            
+
             if (randomValue == 0) { t0(); }
             else if (randomValue == 1) { t1(); }
             else if (randomValue == 2) { t2(); }
@@ -208,7 +244,7 @@ void switchCaseTest(int numberOfAddresses) {
             else if (randomValue == 7) { t7(); }
             else if (randomValue == 8) { t8(); }
             else if (randomValue == 9) { t9(); }
-            
+
             allTimes += stopAndGetTime();
         }
         
@@ -217,17 +253,36 @@ void switchCaseTest(int numberOfAddresses) {
 
 }
 
-int main(int argc, const char * argv[]) {
+void my_int_func(int x)
+{
+    printf( "%d\n", x );
+}
 
-//    switchCaseTest4();
-//    switchCaseTest7();
-//    switchCaseTest10();
-//
-//    functionArray4();
-//    functionArray7();
-//    functionArray10();
+#pragma optimize( "", on )
+ 
+void (*foo)(int);
+
+int main(int argc, const char * argv[]) {
     
-    switchCaseTest(10);
+
+    foo = &my_int_func;
+
+    /* call my_int_func (note that you do not need to write (*foo)(2) ) */
+    foo( 2 );
+    /* but if you want to, you may */
+    (*foo)( 2 );
+
+    cout << endl << "switchCase" << endl << endl;
+    switchCaseTest4();
+    switchCaseTest7();
+    switchCaseTest10();
+
+    cout << endl << "functionArray" << endl << endl;
+    functionArray4();
+    functionArray7();
+    functionArray10();
+    
+//    switchCaseTest(10);
 
     return 0;
 }
