@@ -26,9 +26,13 @@ long values[1000000000];
 
 void t1() {
     testValue += 1;
+    testValue *= 123 + 3;
+    testValue *= 12;
 }
 void t2() {
-    testValue += 2;
+    testValue += 1;
+    testValue *= 123 + 3;
+    testValue *= 12;
 }
 
 void startTimer() {
@@ -39,7 +43,7 @@ void stopTimer(string title) {
     chrono::time_point<chrono::high_resolution_clock> end = chrono::high_resolution_clock::now();
     long long elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
     
-    cout << title << " - " << elapsed << " ms" << endl;
+    cout << title << " - " << elapsed << " microseconds" << endl;
 }
 
 long long stopAndGetTime() {
@@ -58,7 +62,7 @@ long long getLoopTime(int numberOfIteration) {
     startTimer();
 
     for (int i = 0; i < numberOfIteration; i++) {
-        testValue += 3;
+        testValue += 1;
     }
     
     return stopAndGetTime();
@@ -108,9 +112,9 @@ long long randomPath(int numberOfIteration) {
 
 int main(int argc, const char * argv[]) {
     
-    long maxNumberOfIterations = 1000000000;
-    int initialBlockSize = 10000;
-    int blockStride = 10;
+    long maxNumberOfIterations = 10000000;
+    int initialBlockSize = 1000;
+    int blockStride = 5;
     
     setupRandomValues(maxNumberOfIterations);
     
