@@ -14,9 +14,9 @@
             filePath = "Task 3.2/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "switchCaseTest(numberOfAddresses)"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
+            landmarkName = "main(argc, argv)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -30,9 +30,9 @@
             filePath = "Task 3.2/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
-            landmarkName = "switchCaseTest10()"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "functionArray4()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -46,88 +46,10 @@
             filePath = "Task 3.2/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "switchCaseTest4()"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "switchCaseTest7()"
             landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FB7D2A9B-3722-4607-A271-56338415CA2D"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Task 3.2/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "t4()"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "FB7D2A9B-3722-4607-A271-56338415CA2D - 273f3fc5ccc5e485"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "t4()"
-                  moduleName = "Task 3.2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zenabaan/Documents/cpp_tasks/Task%203.2/Task%203.2/main.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "4">
-               </Location>
-               <Location
-                  uuid = "FB7D2A9B-3722-4607-A271-56338415CA2D - 483b20aabcf5370f"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "switchCaseTest7()"
-                  moduleName = "Task 3.2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zenabaan/Documents/cpp_tasks/Task%203.2/Task%203.2/main.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "173">
-               </Location>
-               <Location
-                  uuid = "FB7D2A9B-3722-4607-A271-56338415CA2D - 84d0c8f111ed5d3a"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "switchCaseTest10()"
-                  moduleName = "Task 3.2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zenabaan/Documents/cpp_tasks/Task%203.2/Task%203.2/main.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "191">
-               </Location>
-               <Location
-                  uuid = "FB7D2A9B-3722-4607-A271-56338415CA2D - 4d044dc687d27115"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "switchCaseTest(int)"
-                  moduleName = "Task 3.2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zenabaan/Documents/cpp_tasks/Task%203.2/Task%203.2/main.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "191">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
