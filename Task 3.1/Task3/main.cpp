@@ -14,20 +14,26 @@ using namespace std;
 
 long numberOfIteration = 10000000;
 
-int value1 = 0;
-int value2 = 0;
+chrono::time_point<chrono::high_resolution_clock> start;
 
-void t1() {
-    value1 += 1;
-}
+int testValue = 0;
 
-void t2() {
-    value2 += 1;
-}
+void t1() { testValue += 1; }
+void t2() { testValue += 2; }
 
-void test() {
-    chrono::time_point<chrono::high_resolution_clock> start, end;
+void startTimer() {
     start = chrono::high_resolution_clock::now();
+}
+
+void stopTimer(string title) {
+    chrono::time_point<chrono::high_resolution_clock> end = chrono::high_resolution_clock::now();
+    long long elapsed = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    
+    cout << title << " - " << elapsed << " ms" << endl;
+}
+
+void evenOdd() {
+    startTimer();
 
     for (int i = 0; i < numberOfIteration; i++) {
         if (i % 2 == 0) {
@@ -38,14 +44,11 @@ void test() {
         }
     }
     
-    end = chrono::high_resolution_clock::now();
-    long elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-    cout << "% time > " << elapsed << "ms\n";
+    stopTimer("evenOdd");
 }
 
-void test2() {
-    chrono::time_point<chrono::high_resolution_clock> start, end;
-    start = chrono::high_resolution_clock::now();
+void randomPath() {
+    startTimer();
  
     for (int i = 0; i < numberOfIteration; i++) {
         if ((rand() % 2) == 0) {
@@ -56,19 +59,13 @@ void test2() {
         }
     }
     
-    end = chrono::high_resolution_clock::now();
-    long elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-    cout << "rand time > " << elapsed << "ms\n";
+    stopTimer("randomPath");
 }
 
 int main(int argc, const char * argv[]) {
    
-    test();
-    test2();
+    evenOdd();
+    randomPath();
+    
     return 0;
 }
-
-//3.2 Косвенный переход
-// Массив указателей
-// И мы переходим по функциям в массиве
-// Динамический массив (увеличиваем размер массива по мере надобности)
