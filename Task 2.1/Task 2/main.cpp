@@ -4,7 +4,7 @@
 
 #ifdef _WIN32
 #include <limits.h>
-#include <intrin.h>
+#include <x86intrin.h>
 typedef unsigned __int32  uint32_t;
 #else
 #include <stdint.h>
@@ -36,171 +36,96 @@ class CPUID {
     const uint32_t &EDX() const {return regs[3];}
 };
 
-class CPUInfo {
-    public:
-        CPUInfo();
-        string  vendor()            const { return mVendorId;   }
-        string  model()             const { return mModelName;  }
-        int     cores()             const { return mNumCores;   }
-        float   cpuSpeedInMHz()     const { return mCPUMHz;     }
-        bool    isSSE()             const { return mIsSSE;      }
-        bool    isSSE2()            const { return mIsSSE2;     }
-        bool    isSSE3()            const { return mIsSSE3;     }
-        bool    isSSE41()           const { return mIsSSE41;    }
-        bool    isSSE42()           const { return mIsSSE42;    }
-        bool    isAVX()             const { return mIsAVX;      }
-        bool    isAVX2()            const { return mIsAVX2;     }
-        bool    isHyperThreaded()   const { return mIsHTT;      }
-        int     logicalCpus()       const { return mNumLogCpus; }
 
-    private:
-        // Bit positions for data extractions
-        static const uint32_t SSE_POS   = 0x02000000;
-        static const uint32_t SSE2_POS  = 0x04000000;
-        static const uint32_t SSE3_POS  = 0x00000001;
-        static const uint32_t SSE41_POS = 0x00080000;
-        static const uint32_t SSE42_POS = 0x00100000;
-        static const uint32_t AVX_POS   = 0x10000000;
-        static const uint32_t AVX2_POS  = 0x00000020;
-        static const uint32_t LVL_NUM   = 0x000000FF;
-        static const uint32_t LVL_TYPE  = 0x0000FF00;
-        static const uint32_t LVL_CORES = 0x0000FFFF;
+int
+get_intel_l3_info(unsigned *size, unsigned *assoc, unsigned *linesize) {
+    int regs[4];
+    int i;
 
-        // Attributes
-        string mVendorId;
-        string mModelName;
-        int    mNumSMT;
-        int    mNumCores;
-        int    mNumLogCpus;
-        float  mCPUMHz;
-        bool   mIsHTT;
-        bool   mIsSSE;
-        bool   mIsSSE2;
-        bool   mIsSSE3;
-        bool   mIsSSE41;
-        bool   mIsSSE42;
-        bool   mIsAVX;
-        bool   mIsAVX2;
-};
-
-CPUInfo::CPUInfo()
-{
-    // Get vendor name EAX=0
-    CPUID cpuID0(0, 0);
-    uint32_t HFS = cpuID0.EAX();
-    mVendorId += string((const char *)&cpuID0.EBX(), 4);
-    mVendorId += string((const char *)&cpuID0.EDX(), 4);
-    mVendorId += string((const char *)&cpuID0.ECX(), 4);
-    // Get SSE instructions availability
-    CPUID cpuID1(1, 0);
-    mIsHTT   = cpuID1.EDX() & AVX_POS;
-    mIsSSE   = cpuID1.EDX() & SSE_POS;
-    mIsSSE2  = cpuID1.EDX() & SSE2_POS;
-    mIsSSE3  = cpuID1.ECX() & SSE3_POS;
-    mIsSSE41 = cpuID1.ECX() & SSE41_POS;
-    mIsSSE42 = cpuID1.ECX() & SSE41_POS;
-    mIsAVX   = cpuID1.ECX() & AVX_POS;
-    // Get AVX2 instructions availability
-    CPUID cpuID7(7, 0);
-    mIsAVX2  = cpuID7.EBX() & AVX2_POS;
-
-    string upVId = mVendorId;
-    for_each(upVId.begin(), upVId.end(), [](char& in) { in = ::toupper(in); });
-    // Get num of cores
-    if (upVId.find("INTEL") != std::string::npos) {
-        if(HFS >= 11) {
-            for (int lvl=0; lvl<MAX_INTEL_TOP_LVL; ++lvl) {
-                    CPUID cpuID4(0x0B, lvl);
-                    uint32_t currLevel = (LVL_TYPE & cpuID4.ECX())>>8;
-                    switch(currLevel) {
-                        case 0x01: mNumSMT     = LVL_CORES & cpuID4.EBX(); break;
-                        case 0x02: mNumLogCpus = LVL_CORES & cpuID4.EBX(); break;
-                        default: break;
-                    }
-            }
-            mNumCores = mNumLogCpus/mNumSMT;
-        } else {
-            if (HFS>=1) {
-                mNumLogCpus = (cpuID1.EBX() >> 16) & 0xFF;
-                if (HFS>=4) {
-                    mNumCores = 1 + (CPUID(4, 0).EAX() >> 26) & 0x3F;
-                }
-            }
-            if (mIsHTT) {
-                if (!(mNumCores>1)) {
-                    mNumCores = 1;
-                    mNumLogCpus = (mNumLogCpus >= 2 ? mNumLogCpus : 2);
-                }
-            } else {
-                mNumCores = mNumLogCpus = 1;
-            }
-        }
-    } else if (upVId.find("AMD") != std::string::npos) {
-        if (HFS>=1) {
-            mNumLogCpus = (cpuID1.EBX() >> 16) & 0xFF;
-            if (CPUID(0x80000000, 0).EAX() >=8) {
-                mNumCores = 1 + (CPUID(0x80000008, 0).ECX() & 0xFF);
-            }
-        }
-        if (mIsHTT) {
-            if (!(mNumCores>1)) {
-                mNumCores = 1;
-                mNumLogCpus = (mNumLogCpus >= 2 ? mNumLogCpus : 2);
-            }
-        } else {
-            mNumCores = mNumLogCpus = 1;
-        }
-    } else {
-        cout<< "Unexpected vendor id" <<endl;
-    }
-    // Get processor brand string
-    // This seems to be working for both Intel & AMD vendors
-    for(int i=0x80000002; i<0x80000005; ++i) {
-        CPUID cpuID(i, 0);
-        mModelName += string((const char*)&cpuID.EAX(), 4);
-        mModelName += string((const char*)&cpuID.EBX(), 4);
-        mModelName += string((const char*)&cpuID.ECX(), 4);
-        mModelName += string((const char*)&cpuID.EDX(), 4);
-    }
-}
-
-int main(int argc, char *argv[])
-{
-    CPUInfo cinfo;
-    
-    int CPUInfo[4];
-    CPUID cpuid(4, 0);
-    
-    for (int i = 5; i < 20; i++) {
-        int nMaxThread = (CPUInfo[i] & 0x03ffc000) >> 14;
-        int nSysLineSize = (CPUInfo[i] & 0x0fff);
-        int nPhysicalLinePartitions = (CPUInfo[i] & 0x03ff000) >> 12;
-        int nWaysAssociativity = (CPUInfo[i]) >> 22;
-        int nNumberSets = CPUInfo[i];
-        int nCacheSize = (nWaysAssociativity + 1) * (nPhysicalLinePartitions + 1) * (nSysLineSize + 1) * (nNumberSets + 1);
-
-        cout << "Cache level : " << i << endl;
-        cout << "Max thread : " << nMaxThread + 1 << endl;
-        cout << "Line size : " << nSysLineSize + 1 << endl;
-        cout << "Partitions : " << nPhysicalLinePartitions + 1 << endl;
-        cout << "Ways : " << nWaysAssociativity + 1 << endl;
-        cout << "Sets : " << nNumberSets + 1 << endl;
-        cout << "Chache size : " << nCacheSize << endl;
-        cout << " ----------------------------- " << endl;
+    __cpuid(regs, 0); /* Maximum Input Value */
+    int max_leaf = regs[0];
+    if (max_leaf < 2) {
+        return -1; /* no way to find L3 cache info */
     }
 
-    cout << "CPU vendor = " << cinfo.vendor() << endl;
-    cout << "CPU Brand String = " << cinfo.model() << endl;
-    cout << "# of cores = " << cinfo.cores() << endl;
-    cout << "# of logical cores = " << cinfo.logicalCpus() << endl;
-    cout << "Is CPU Hyper threaded = " << cinfo.isHyperThreaded() << endl;
-    cout << "CPU SSE = " << cinfo.isSSE() << endl;
-    cout << "CPU SSE2 = " << cinfo.isSSE2() << endl;
-    cout << "CPU SSE3 = " << cinfo.isSSE3() << endl;
-    cout << "CPU SSE41 = " << cinfo.isSSE41() << endl;
-    cout << "CPU SSE42 = " << cinfo.isSSE42() << endl;
-    cout << "CPU AVX = " << cinfo.isAVX() << endl;
-    cout << "CPU AVX2 = " << cinfo.isAVX2() << endl;
+    __cpuid(regs, 1); /* Additional Information */
+    int family = (regs[0] >> 8) & 0xF;
+    int model = (regs[0] >> 4) & 0xF;
 
-    return 0;
+    __cpuid(regs, 2); /* Cache and TLB Information */
+
+    regs[0] &= 0xFFFFFF00; /* least significant byte of EAX is invalid */
+    for (i = 0; i < 4; i++) {
+        if (regs[i] < 0) { /* invalid if most significant bit set */
+            regs[i] = 0;
+        }
+    }
+
+    unsigned char *descriptors = (unsigned char *) regs;
+
+    const int kb = 1024;
+    const int mb = 1024 * kb;
+
+#define RETINFO(s, a, l) *size = (s); *assoc = (a); *linesize = (l); return 0
+
+    int use_leaf_4 = 0;
+    for (i = 0; i < 32; i++) {
+        switch(descriptors[i]) {
+        case 0x22: RETINFO(512 * kb, 4, 64);
+        case 0x23: RETINFO(1 * mb, 8, 64);
+        case 0x25: RETINFO(2 * mb, 8, 64);
+        case 0x29: RETINFO(4 * mb, 8, 64);
+        case 0x40: RETINFO(0, 0, 0); /* no L3 cache */
+        case 0x46: RETINFO(4 * mb, 4, 64);
+        case 0x47: RETINFO(8 * mb, 8, 64);
+        case 0x49:
+            if (family == 0x0F && model == 0x06) {
+                RETINFO(4 * mb, 16, 64);
+            }
+            break;
+        case 0x4A: RETINFO(6 * mb, 12, 64);
+        case 0x4B: RETINFO(8 * mb, 16, 64);
+        case 0x4C: RETINFO(12 * mb, 12, 64);
+        case 0x4D: RETINFO(16  * mb, 16, 64);
+        case 0xD0: RETINFO(512 * kb, 4, 64);
+        case 0xD1: RETINFO(1 * mb, 4, 64);
+        case 0xD6: RETINFO(1 * mb, 8, 64);
+        case 0xD7: RETINFO(2 * mb, 8, 64);
+        case 0xD8: RETINFO(4 * mb, 8, 64);
+        case 0xDC: RETINFO(1 * mb + 512 * kb, 12, 64);
+        case 0xDD: RETINFO(3 * mb, 12, 64);
+        case 0xDE: RETINFO(6 * mb, 12, 64);
+        case 0xE2: RETINFO(2 * mb, 16, 64);
+        case 0xE3: RETINFO(4 * mb, 16, 64);
+        case 0xE4: RETINFO(8 * mb, 16, 64);
+        case 0xEA: RETINFO(12 * mb, 24, 64);
+        case 0xEB: RETINFO(18 * mb, 24, 64);
+        case 0xEC: RETINFO(24 * mb, 24, 64);
+
+        case 0xFF:
+            use_leaf_4 = 1;
+            break;
+        }
+    }
+
+    if (!use_leaf_4 || max_leaf < 4) {
+        return -1; /* failed, no L3 info found */
+    }
+
+    i = 0;
+    while(1) {
+        __cpuidex(regs, 4, i); /* Deterministic Cache Parameters */
+        if ((regs[0] & 0x1F) == 0) {
+            return RETINFO(0, 0, 0); /* no L3 cache */
+        }
+        if (((regs[0] >> 5) & 0x7) == 3) {
+            int lsize = (regs[1] & 0xFFF) + 1;
+            int partitions = ((regs[1] >> 12) & 0x3FF) + 1;
+            int ways = ((regs[1] >> 22) & 0x3FF) + 1;
+            int sets = regs[2] + 1;
+            RETINFO(ways * partitions * lsize * sets,
+                ways, lsize);
+        }
+        i++;
+    }
 }

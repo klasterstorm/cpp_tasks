@@ -12,38 +12,33 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#pragma optimize( "", off )
 
 using namespace std;
 
 chrono::time_point<chrono::high_resolution_clock> start;
 
 int testValue = 0;
-int testValue2 = 0;
+int testValue2 = 10;
 
-long values[1000000000];
+int randomValues[100000000];
+int evenOddValues[100000000];
 
-#pragma optimize( "", off )
 
 void t1() {
     testValue += 1;
-    testValue *= 123 + 3;
-    testValue *= 12;
+    testValue2 *= 12 + 4;
+    testValue2 *= testValue;
 }
+
 void t2() {
-    testValue += 1;
-    testValue *= 123 + 3;
-    testValue *= 12;
+    testValue2 += 1;
+    testValue *= 12 + 4;
+    testValue *= testValue;
 }
 
 void startTimer() {
     start = chrono::high_resolution_clock::now();
-}
-
-void stopTimer(string title) {
-    chrono::time_point<chrono::high_resolution_clock> end = chrono::high_resolution_clock::now();
-    long long elapsed = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-    
-    cout << title << " - " << elapsed << " microseconds" << endl;
 }
 
 long long stopAndGetTime() {
@@ -54,7 +49,13 @@ long long stopAndGetTime() {
 
 void setupRandomValues(long blockSize) {
     for (long i = 0; i < blockSize; i++) {
-        values[i] = rand() % 2;
+        randomValues[i] = rand() % 2;
+    }
+}
+
+void setupEvenOddValues(long blockSize) {
+    for (long i = 0; i < blockSize; i++) {
+        evenOddValues[i] = i % 2;
     }
 }
 
@@ -74,7 +75,7 @@ long long evenOdd(int numberOfIteration) {
     startTimer();
 
     for (long i = 0; i < numberOfIteration; i++) {
-        if (i % 2 == 0) {
+        if (evenOddValues[i] == 0) {
             t1();
         }
         else {
@@ -94,7 +95,7 @@ long long randomPath(int numberOfIteration) {
     startTimer();
  
     for (long i = 0; i < numberOfIteration; i++) {
-        if (values[i] == 0) {
+        if (randomValues[i] == 0) {
             t1();
         }
         else {
@@ -112,24 +113,23 @@ long long randomPath(int numberOfIteration) {
 
 int main(int argc, const char * argv[]) {
     
-    long maxNumberOfIterations = 10000000;
+    long maxNumberOfIterations = 2000000;
     int initialBlockSize = 1000;
-    int blockStride = 5;
     
     setupRandomValues(maxNumberOfIterations);
+    setupEvenOddValues(maxNumberOfIterations);
     
     ofstream outputFile;
-    outputFile.open ("outputFile.txt");
+    outputFile.open ("Task3.1_output.txt");
    
-    for (int blockSize = initialBlockSize; blockSize < maxNumberOfIterations; blockSize *= blockStride) {
-        outputFile << evenOdd(blockSize) << endl;
+    for (int blockSize = initialBlockSize; blockSize < maxNumberOfIterations; blockSize *= 2) {
+        outputFile << "evenOdd" << " " << blockSize << " " << evenOdd(blockSize) << endl;
     }
     
     cout << endl;
-    outputFile << "------" << endl;
     
-    for (int blockSize = initialBlockSize; blockSize < maxNumberOfIterations; blockSize *= blockStride) {
-        outputFile << randomPath(blockSize) << endl;
+    for (int blockSize = initialBlockSize; blockSize < maxNumberOfIterations; blockSize *= 2) {
+        outputFile << "randomPath" << " " << blockSize << " " << randomPath(blockSize) << endl;
     }
     
     outputFile.close();

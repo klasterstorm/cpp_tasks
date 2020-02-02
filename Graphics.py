@@ -1,42 +1,46 @@
 from matplotlib import pyplot
 
-f = open("outputFile.txt", "r")
-
-a = []
-b = []
-
-isNew = False
-
-for x in f:
-    if x == "------\n" and not isNew:
-        isNew = True
-
-    if x != "" and x != "------\n":
-        if isNew:
-            a.append(int(x))
-        else:
-            b.append(int(x))
+f = open("Task1_output.txt", "r") 
 
 
-
-arrOfX = []
-
-maxNumberOfIterations = 10000000
-initialBlockSize = 1000
-blockStride = 5
-
-blockSize = initialBlockSize
-
-for i in range(0, 6):
-    blockSize *= blockStride
-    arrOfX.append(blockSize)
-    print(blockSize)
+allData = []
+namesData = []
+valueData = []
 
 
+for row in f:
+    row = row.replace("\n", "")
+    rowArray = row.split(" ")
 
-pyplot.plot(a, arrOfX, 'b', label = "EvenOdd")
-pyplot.plot(b, arrOfX, 'r', label = "Random")
-pyplot.ylabel('b - evenOdd, r - random')
+    allData.append(rowArray)
+
+    name = rowArray[0]
+
+    if name not in namesData:
+        namesData.append(name)
+        valueData.append([])
+
+for (i, namei) in enumerate(namesData):
+
+    for data in allData:
+        currentName = data[0]
+        val1 = int(data[1])
+        val2 = int(data[2])
+
+        if currentName == namei:
+            valueData[i].append([val1, val2])
+
+
+for (i, dataName) in enumerate(namesData):
+    val1 = []
+    val2 = []
+
+    for valData in valueData[i]:
+        val1.append(valData[0])
+        val2.append(valData[1])
+
+    pyplot.plot(val1, val2, label = dataName)
+
 pyplot.legend(loc="upper left")
 pyplot.show()
 

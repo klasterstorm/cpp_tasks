@@ -9,6 +9,12 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
+#include <iostream>
+#include <ctime>
+#include <chrono>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 using namespace std;
 chrono::time_point<chrono::high_resolution_clock> start;
@@ -68,20 +74,20 @@ int getRandomValue(int maxValue) {
 
 typedef void (*FunctionsArray) ();
 
-void getFunctionsTime(FunctionsArray functions[], int size) {
+long long getFunctionsTime(FunctionsArray functions[], int size) {
     
     startTimer();
     
     for (int i = 0; i < numberOfIterations; i++) {
         int randomValue = getRandomValue(size);
         
-        functions[randomValue]();
+        functions[randomValue]();   
     }
     
-    stopTimer("");
+    return stopAndGetTime();
 }
 
-void switchCaseTest4() {
+long long switchCaseTest4() {
 
     startTimer();
     
@@ -94,10 +100,10 @@ void switchCaseTest4() {
         else if (randomValue == 3) { t3(); }
     }
     
-    stopTimer("4");
+    return stopAndGetTime();
 }
 
-void switchCaseTest7() {
+long long switchCaseTest7() {
     startTimer();
 
     for (int i = 0; i < numberOfIterations; i++) {
@@ -112,10 +118,10 @@ void switchCaseTest7() {
         else if (randomValue == 6) { t6(); }
     }
 
-    stopTimer("7");
+    return stopAndGetTime();
 }
 
-void switchCaseTest10() {
+long long switchCaseTest10() {
     startTimer();
 
     for (int i = 0; i < numberOfIterations; i++) {
@@ -133,10 +139,10 @@ void switchCaseTest10() {
         else if (randomValue == 9) { t9(); }
     }
 
-    stopTimer("10");
+    return stopAndGetTime();
 }
 
-void functionArray4() {
+long long functionArray4() {
     
     FunctionsArray functions[] =
      {
@@ -146,10 +152,10 @@ void functionArray4() {
          t3,
      };
     
-    getFunctionsTime(functions, 3);
+    return getFunctionsTime(functions, 3);
 }
 
-void functionArray7() {
+long long functionArray7() {
     
     FunctionsArray functions[] =
      {
@@ -162,10 +168,10 @@ void functionArray7() {
          t6
      };
     
-    getFunctionsTime(functions, 6);
+    return getFunctionsTime(functions, 6);
 }
 
-void functionArray10() {
+long long functionArray10() {
     
     FunctionsArray functions[] =
      {
@@ -181,52 +187,38 @@ void functionArray10() {
          t9
      };
     
-    getFunctionsTime(functions, 9);
+    return getFunctionsTime(functions, 9);
 }
 
 // ----- MAIN -------
 
-void switchCaseTest(int numberOfAddresses) {
+long long switchCaseTest(int numberOfAddresses) {
 
     for (int aNumber = 0; aNumber < numberOfAddresses; aNumber++) {
-        
-        startTimer();
-        
-        for (int i = 0; i < numberOfIterations; i++) {
-            
-            int randomValue = getRandomValue(aNumber);
 
-            if (randomValue == 0) { t0(); }
-            else if (randomValue == 1) { t1(); }
-            else if (randomValue == 2) { t2(); }
-            else if (randomValue == 3) { t3(); }
-            else if (randomValue == 4) { t4(); }
-            else if (randomValue == 5) { t5(); }
-            else if (randomValue == 6) { t6(); }
-            else if (randomValue == 7) { t7(); }
-            else if (randomValue == 8) { t8(); }
-            else if (randomValue == 9) { t9(); }
-        }
-        
-        stopTimer("");
     }
 }
 
 #pragma optimize( "", on )
 
 int main(int argc, const char * argv[]) {
+    
+    ofstream outputFile;
+    outputFile.open ("output.txt");
+    
+    for (int i = 1; i < 10; i++) {
+        outputFile << "switchCase" << " " << i << " " << switchCaseTest(i) << endl;
+    }
 
-    cout << endl << "switchCase" << endl << endl;
-    switchCaseTest4();
-    switchCaseTest7();
-    switchCaseTest10();
 
-    cout << endl << "functionArray" << endl << endl;
-    functionArray4();
-    functionArray7();
-    functionArray10();
-//
-//    switchCaseTest(10);
+//    outputFile << "switchCase" << " " << 7 << " " << switchCaseTest7() << endl;
+//    outputFile << "switchCase" << " " << 10 << " " << switchCaseTest10() << endl;
+
+    outputFile << "functionArray" << " " << 4 << " " << functionArray4() << endl;
+    outputFile << "functionArray" << " " << 7 << " " << functionArray7() << endl;
+    outputFile << "functionArray" << " " << 10 << " " << functionArray10() << endl;
+    
+    outputFile.close();
 
     return 0;
 }

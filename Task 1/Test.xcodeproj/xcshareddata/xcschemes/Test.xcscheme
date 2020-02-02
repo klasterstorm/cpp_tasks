@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D5B3AB6C23E004F30042E0ED"
-               BuildableName = "Task3"
-               BlueprintName = "Task3"
-               ReferencedContainer = "container:Task3.xcodeproj">
+               BlueprintIdentifier = "D5D7EB40237BE33200ABCB4C"
+               BuildableName = "Test"
+               BlueprintName = "Test"
+               ReferencedContainer = "container:Test.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +31,9 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
-      selectedDebuggerIdentifier = ""
-      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
       customWorkingDirectory = "/Users/zenabaan/Documents/cpp_tasks"
@@ -45,10 +45,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D5B3AB6C23E004F30042E0ED"
-            BuildableName = "Task3"
-            BlueprintName = "Task3"
-            ReferencedContainer = "container:Task3.xcodeproj">
+            BlueprintIdentifier = "D5D7EB40237BE33200ABCB4C"
+            BuildableName = "Test"
+            BlueprintName = "Test"
+            ReferencedContainer = "container:Test.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,10 +62,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D5B3AB6C23E004F30042E0ED"
-            BuildableName = "Task3"
-            BlueprintName = "Task3"
-            ReferencedContainer = "container:Task3.xcodeproj">
+            BlueprintIdentifier = "D5D7EB40237BE33200ABCB4C"
+            BuildableName = "Test"
+            BlueprintName = "Test"
+            ReferencedContainer = "container:Test.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
